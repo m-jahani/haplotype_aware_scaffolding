@@ -178,11 +178,13 @@ FINAL_FASTA %>%
   arrange(desc(length)) %>%
   select(-length)-> FINAL_FASTA
   
-#save assembled contigs
-write_fasta(pull(FINAL_FASTA,sq),pull(FINAL_FASTA,name),"/Users/mojtabajahani/Downloads/AGA10_r0/test.fasta")
+#save assembled contigs for haplotype 1
+write_fasta(pull(filter(FINAL_FASTA,grepl("^H1",name)),sq),pull(filter(FINAL_FASTA,grepl("^H1",name)),name),"/Users/mojtabajahani/Downloads/AGA10_r0/AGA10_hap1.fasta")
+
+#save assembled contigs for haplotype 2
+write_fasta(pull(filter(FINAL_FASTA,grepl("^H2",name)),sq),pull(filter(FINAL_FASTA,grepl("^H2",name)),name),"/Users/mojtabajahani/Downloads/AGA10_r0/AGA10_hap2.fasta")
 
 rm(FINAL_FASTA)
-
 
 #save contig sequences
 CORRECTED_CONTIGS %>% 
@@ -190,9 +192,10 @@ CORRECTED_CONTIGS %>%
          -contig_order_in_chr) %>%
   arrange(name) -> CORRECTED_CONTIGS_sq
   
-write_fasta(pull(CORRECTED_CONTIGS_sq,sq),pull(CORRECTED_CONTIGS_sq,name),"/Users/mojtabajahani/Downloads/AGA10_r0/test_contig.fasta")
+write_fasta(pull(CORRECTED_CONTIGS_sq,sq),pull(CORRECTED_CONTIGS_sq,name),"/Users/mojtabajahani/Downloads/AGA10_r0/AGA10_h12_reviwed_contig.fasta")
 
 rm(CORRECTED_CONTIGS_sq)
+
 #position of contigs in each chromosome
 CORRECTED_CONTIGS %>% 
   mutate(length = get_sq_lengths(sq)) %>% 
@@ -206,7 +209,7 @@ CORRECTED_CONTIGS %>%
          start,
          end,
          contig = name) %>%
-  fwrite("/Users/mojtabajahani/Downloads/AGA10_r0/test",
+  fwrite("/Users/mojtabajahani/Downloads/AGA10_r0/AGA_h12_reviwed_contig_chr_coord",
          sep = "\t",
          quote = F,
          col.names = F)
