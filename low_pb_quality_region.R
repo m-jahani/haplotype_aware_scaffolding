@@ -2,8 +2,11 @@ library(data.table)
 library(tidyverse)
 library(IRanges)
 
+args = commandArgs(trailingOnly = TRUE)
 
-fread("/Users/mojtabajahani/Downloads/AGA10_r0/merqury/AGA10_hap1_only.bed") -> LOW_Q_BED
+BED <- args[1] #low quality regions from Merqury
+
+fread(BED) -> LOW_Q_BED
 
 LOW_Q_BED %>% distinct(V1) %>% pull(V1) -> SCAFF
 MERGED_LOW_Q <- NULL
@@ -21,6 +24,3 @@ for (i in 1:length(SCAFF)) {
              end) %>%
       rbind(.,MERGED_LOW_Q) -> MERGED_LOW_Q
 }
-
-
-
