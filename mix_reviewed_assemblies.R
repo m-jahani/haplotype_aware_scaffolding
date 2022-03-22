@@ -2,21 +2,25 @@ library(data.table)
 library(tidyverse)
 
 
+args = commandArgs(trailingOnly = TRUE)
 
+AASEM1 <- args[1] #reviewed assembly hap1
+AASEM2 <- args[2] #reviewed assembly hap2
+map_hap12 <- args[3] #read minimap2 alignment between hap1 and hap2 contigs in paf format
 ####################################################################Read Data#####################################################################   
 # read *reviewed assembly hap1
-read.table("/Users/mojtabajahani/Downloads/AGA10_r0/AGA10.hic.hap1.p_ctg.0.review.assembly",
+read.table(AASEM1,
            fill = TRUE, 
            col.names = paste("V", 1:100, sep = "")# with the assumption that each chromosome does not contain more than 100 conigs 
            ) -> HAP1
 
 # read *reviewed assembly hap2
-read.table("/Users/mojtabajahani/Downloads/AGA10_r0/AGA10.hic.hap2.p_ctg.0.review.assembly", 
+read.table(AASEM2, 
            fill = TRUE, 
            col.names = paste("V", 1:100, sep = "")) -> HAP2
 
 # read minimap2 alignment between hap1 and hap2 contigs
-read.table("/Users/mojtabajahani/Downloads/AGA10_r0/AGA10_H12.final.paf",
+read.table(map_hap12,
                        fill = TRUE) -> HAP1_HAP2_ALIGNMENT
 ##################################################Contigs/fragment/Debris order in assembly file####################################################          
 
