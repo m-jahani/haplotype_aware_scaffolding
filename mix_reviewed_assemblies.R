@@ -1,7 +1,6 @@
 library(data.table)
 library(tidyverse)
 
-
 args = commandArgs(trailingOnly = TRUE)
 
 AASEM1 <- args[1] #reviewed assembly hap1
