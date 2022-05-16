@@ -4,7 +4,7 @@ FASTA=$1
 SAVEDIR=$2
 
 FASTA_BASE=${FASTA##*/}
-grep "^>" $FASTA | sed 's/^>//g' >${SAVEDIR}/${FASTA_BASE%%.fasta}_CHR_LISR
+grep "^>" $FASTA | sed 's/^>//g' >${SAVEDIR}/${FASTA_BASE%%.fasta}_CHR_LIST
 
 while read SCAFFOLD; do
     echo $SCAFFOLD >${SAVEDIR}/${SCAFFOLD}.txt
@@ -15,7 +15,7 @@ while read SCAFFOLD; do
     rm ${SAVEDIR}/${FASTA_BASE%%.fasta}_${SCAFFOLD}.fatsa ${SAVEDIR}/${FASTA_BASE%%.fasta}_${SCAFFOLD}.fatsa.2.5.7.80.10.50.2000.dat
     cat ${SAVEDIR}/${FASTA_BASE%%.fasta}_${SCAFFOLD}.bed >>${SAVEDIR}/${FASTA_BASE%%.fasta}.bed
     rm ${SAVEDIR}/${FASTA_BASE%%.fasta}_${SCAFFOLD}.bed
-done <${SAVEDIR}/${FASTA_BASE%%.fasta}_CHR_LISR
+done <${SAVEDIR}/${FASTA_BASE%%.fasta}_CHR_LIST
 
 bedtools maskfasta -soft -fi $FASTA -bed ${SAVEDIR}/${FASTA_BASE%%.fasta}.bed -fo ${SAVEDIR}/${FASTA_BASE%%.fasta}.softmask.fatsa
 rm ${SAVEDIR}/${FASTA_BASE%%.fasta}.bed ${SAVEDIR}/${FASTA_BASE%%.fasta}_CHR_LISR

@@ -3,18 +3,18 @@ library(tidyverse)
 
 args = commandArgs(trailingOnly = TRUE)
 
-AASEM1 <- args[1] #reviewed assembly hap1
-AASEM2 <- args[2] #reviewed assembly hap2
-map_hap12 <- args[3] #read minimap2 alignment between hap1 and hap2 contigs in paf format
+ASSEM1 <- "/Users/mojtabajahani/Downloads/AGA10_r0/AGA10.hic.hap1.p_ctg.0.assembly"#args[1] #reviewed assembly hap1 
+ASSEM2 <- "/Users/mojtabajahani/Downloads/AGA10_r0/AGA10.hic.hap2.p_ctg.0.assembly"#args[2] #reviewed assembly hap2
+map_hap12 <- "/Users/mojtabajahani/Downloads/AGA10_r0/AGA10_H12.paf"#args[3] #read minimap2 alignment between hap1 and hap2 contigs in paf format
 ####################################################################Read Data#####################################################################   
 # read *reviewed assembly hap1
-read.table(AASEM1,
+read.table(ASSEM1,
            fill = TRUE, 
            col.names = paste("V", 1:100, sep = "")# with the assumption that each chromosome does not contain more than 100 conigs 
            ) -> HAP1
 
 # read *reviewed assembly hap2
-read.table(AASEM2, 
+read.table(ASSEM2, 
            fill = TRUE, 
            col.names = paste("V", 1:100, sep = "")) -> HAP2
 
