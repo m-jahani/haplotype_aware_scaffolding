@@ -1,11 +1,12 @@
 library(data.table)
 library(tidyverse)
+library(data.table)
 
 args = commandArgs(trailingOnly = TRUE)
 
-ASSEM1 <- "/Users/mojtabajahani/Downloads/AGA10_r0/AGA10.hic.hap1.p_ctg.0.assembly"#args[1] #reviewed assembly hap1 
-ASSEM2 <- "/Users/mojtabajahani/Downloads/AGA10_r0/AGA10.hic.hap2.p_ctg.0.assembly"#args[2] #reviewed assembly hap2
-map_hap12 <- "/Users/mojtabajahani/Downloads/AGA10_r0/AGA10_H12.paf"#args[3] #read minimap2 alignment between hap1 and hap2 contigs in paf format
+ASSEM1 <- args[1] #reviewed assembly hap1 #"/Users/mojtabajahani/Downloads/AGA10_r0/AGA10.hic.hap1.p_ctg.0.assembly"
+ASSEM2 <- args[2] #reviewed assembly hap2 #"/Users/mojtabajahani/Downloads/AGA10_r0/AGA10.hic.hap2.p_ctg.0.assembly"
+map_hap12 <- args[3] #read minimap2 alignment between hap1 and hap2 contigs in paf format #"/Users/mojtabajahani/Downloads/AGA10_r0/AGA10_H12.paf"
 ####################################################################Read Data#####################################################################   
 # read *reviewed assembly hap1
 read.table(ASSEM1,
@@ -28,11 +29,11 @@ HAP1 %>%
   filter(grepl("^>",V1)) %>% 
   select(fragment_ID = V1,
          original_order = V2,
-         length = V3)  %>%
+         length = V3)  %>% 
   separate(fragment_ID, 
            into = c("contig","lable1","lable2"),
            sep = ":::",
-           remove=F) %>% 
+           remove=F)  %>% 
   group_by(contig) %>% 
   summarize(total_length=sum(length)) %>%
   ungroup() -> CONTIG_LENGTH_HAP1
