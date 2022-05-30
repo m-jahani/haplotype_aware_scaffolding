@@ -123,7 +123,7 @@ rbind(DATA_HAP1,
 
 #Extract chromosome info for hap1
 HAP1 %>% 
-  filter(!grepl("^>",V1)) %>%
+  filter(!grepl("^>",V1)) %>% 
   mutate(CHR = row_number()) %>%
   gather(contig_order_in_chr, original_order_sign, V1:V100) %>%
   filter(!is.na(original_order_sign)) %>%
