@@ -8,10 +8,10 @@ ASSEM1 <- args[1] #reviewed assembly hap1 #"/Users/mojtabajahani/Downloads/AGA10
 ASSEM2 <- args[2] #reviewed assembly hap2 #"/Users/mojtabajahani/Downloads/AGA10_r0/AGA10.hic.hap2.p_ctg.0.assembly"
 map_hap12 <- args[3] #read minimap2 alignment between hap1 and hap2 contigs in paf format #"/Users/mojtabajahani/Downloads/AGA10_r0/AGA10_H12.paf"
 save_dir <- args[4]
-ASSEM1 <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1.p_ctg.0.review.assembly"
-ASSEM2 <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap2.p_ctg.0.review.assembly"
-map_hap12 <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1_AGA10.hic.hap2.paf"
-save_dir <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022"
+# ASSEM1 <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1.p_ctg.0.review.assembly"
+# ASSEM2 <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap2.p_ctg.0.review.assembly"
+# map_hap12 <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1_AGA10.hic.hap2.paf"
+# save_dir <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022"
 ####################################################################Read Data#####################################################################   
 # read *reviewed assembly hap1
 read.table(ASSEM1,
