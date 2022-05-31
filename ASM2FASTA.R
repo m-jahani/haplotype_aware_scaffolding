@@ -1,19 +1,29 @@
 library(tidyverse)
 library(tidysq)
 
+args = commandArgs(trailingOnly = TRUE)
 
+MIX_ASSEM <- args[1] #"/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1_AGA10.hic.hap2.review.assembly"
+ASSEM2 <- args[2] #"/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1.p_ctg_AGA10.hic.hap2.p_ctg.fasta"
+PREFIX <- args[3]
+SAVE_DIR <- args[4]
+
+MIX_ASSEM <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1_AGA10.hic.hap2.review.assembly"
+MIX_FASTA <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1.p_ctg_AGA10.hic.hap2.p_ctg.fasta"
+PREFIX <- "AGA10"
+SAVE_DIR <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022"
 ####################################################################Read Data#####################################################################   
 # read *reviewed assembly hap1_hap2 ()assembly file after juicebox curation
-read.table("/Users/mojtabajahani/Downloads/AGA10_r0/mixedhap12.final.review.assembly",
+read.table(MIX_ASSEM,
       fill = TRUE, 
       col.names = paste("V", 1:100, sep = "")# with the assumption that each chromosome does not contain more than 100 conigs 
 ) -> HAP12_assembly
 
 
-read_fasta("/Users/mojtabajahani/Downloads/AGA10_r0/AGA10.hic.hap12.p_ctg.fasta") -> HAP12_FASTA #merged hap1 and hap2 contigs
+read_fasta(MIX_FASTA) -> HAP12_FASTA #merged hap1 and hap2 contigs
 ##################################################Contigs/fragment/Debris order in assembly file####################################################          
 #fragmented contigs
-HAP12_assembly %>%
+HAP12_assembly %>% 
   filter(grepl("^>",V1)) %>% 
   select(fragment_ID = V1,
          original_order = V2,
@@ -28,14 +38,15 @@ HAP12_assembly %>%
 if (nrow(FRAGMENTS) > 0 ) {
   
 #calculate the coordination of the fragmented contigs in the original contig
-FRAGMENTS %>%
+FRAGMENTS %>% 
   separate(lable1,
-           into = c("Fragment","Fragment_order")) %>%
+           into = c("Fragment","Fragment_order")) %>% 
   group_by(contig) %>%
-  arrange(as.numeric(Fragment_order))%>%
-  ungroup() %>%
-  mutate(end = ifelse(Fragment_order==1,length,lag(length)+length)) %>%
-  mutate(start = (end-length)+1) %>% 
+  arrange(as.numeric(Fragment_order)) %>%
+  mutate(end=cumsum(length)) %>%
+  ungroup() %>% 
+  #mutate(end = ifelse(Fragment_order == 1, length, lag(length) + length)) %>% 
+  mutate(start = (end-length) + 1) %>%  
   mutate(fragment_ID = gsub(">","",fragment_ID)) %>%
   mutate(contig = gsub(">","",contig)) %>%
   select(contig,
@@ -60,7 +71,7 @@ for (CONTIG in 1:nrow(coord_fragments)) {
           FRAGMENTED_CONTIGS) -> FRAGMENTED_CONTIGS
 }
 
-#remove the the original contig and replce the fragments
+#remove the the original contig and replace the fragments
 HAP12_FASTA %>% 
   filter(!name %in%  pull(distinct(coord_fragments,contig))) %>% 
   bind_rows(.,
@@ -88,20 +99,19 @@ HAP12_assembly %>%
           contig_order_in_chr)  %>% 
   full_join(.,
             select(filter(HAP12_assembly,grepl("^>",V1)),fragment_ID = V1,original_order = V2),
-            by=c("order"="original_order")) %>%
+            by=c("order"="original_order")) %>% 
   mutate(fragment_ID = gsub(">","",fragment_ID)) %>% 
-  mutate(HAP=ifelse(grepl("h1",fragment_ID),"H1","H2")) %>% 
+  mutate(HAP = ifelse(grepl("h1",fragment_ID),"H1","H2")) %>% 
   group_by(HAP) %>%
     arrange(HAP,CHR)  %>%
     mutate(NEW_CHR = as.integer(factor(CHR))) %>%
-  ungroup() %>%
-  mutate(Chromosome=paste(HAP,"HiC_scaffold",NEW_CHR,sep = "_")) %>%
-  mutate(orientation=ifelse(order_sign<0,"R","F")) %>% 
+  ungroup() %>% 
+  mutate(Chromosome=paste(HAP,"HiC_scaffold",NEW_CHR,sep = "_")) %>% 
+  mutate(orientation = ifelse(order_sign<0,"R","F")) %>% 
   select(Chromosome,
          contig_order_in_chr,
          fragment_ID,
          orientation) -> CONTIG_ORDER_CHR 
-
 
 HAP12_FASTA_FRAG %>% 
   full_join(.,
@@ -129,7 +139,7 @@ for (CONTIG in 1:nrow(REV_CONTIG)) {
     enframe() %>%
     mutate(name = as.character(REV_CONTIG[CONTIG,2]),
            Chromosome = as.character(REV_CONTIG[CONTIG,3]),
-           contig_order_in_chr = as.numeric(as.character(REV_CONTIG[CONTIG,4]))) %>%
+           contig_order_in_chr = as.numeric(as.character(REV_CONTIG[CONTIG,4]))) %>% 
     select(sq = value,
            name,
            Chromosome,
@@ -162,7 +172,7 @@ for (CHR in 1:length(CHROMOSOME)) {
     pull(sq) %>%
     collapse() %>%
     enframe() %>%
-    mutate(name = as.character(CHROMOSOME[CHR])) %>%
+    mutate(name = as.character(CHROMOSOME[CHR])) %>% 
     select(sq = value,
            name) %>%
     bind_rows(.,
@@ -178,10 +188,10 @@ FINAL_FASTA %>%
   select(-length)-> FINAL_FASTA
   
 #save assembled contigs for haplotype 1
-write_fasta(pull(filter(FINAL_FASTA,grepl("^H1",name)),sq),pull(filter(FINAL_FASTA,grepl("^H1",name)),name),"/Users/mojtabajahani/Downloads/AGA10_r0/AGA10_hap1.fasta")
+write_fasta(pull(filter(FINAL_FASTA,grepl("^H1",name)),sq),pull(filter(FINAL_FASTA,grepl("^H1",name)),name),paste0(SAVE_DIR,"/",PREFIX,"hap1.reviewed.chr_assembled.fasta"))
 
 #save assembled contigs for haplotype 2
-write_fasta(pull(filter(FINAL_FASTA,grepl("^H2",name)),sq),pull(filter(FINAL_FASTA,grepl("^H2",name)),name),"/Users/mojtabajahani/Downloads/AGA10_r0/AGA10_hap2.fasta")
+write_fasta(pull(filter(FINAL_FASTA,grepl("^H2",name)),sq),pull(filter(FINAL_FASTA,grepl("^H2",name)),name),paste0(SAVE_DIR,"/",PREFIX,"hap2.reviewed.chr_assembled.fasta"))
 
 rm(FINAL_FASTA)
 
@@ -191,7 +201,7 @@ CORRECTED_CONTIGS %>%
          -contig_order_in_chr) %>%
   arrange(name) -> CORRECTED_CONTIGS_sq
   
-write_fasta(pull(CORRECTED_CONTIGS_sq,sq),pull(CORRECTED_CONTIGS_sq,name),"/Users/mojtabajahani/Downloads/AGA10_r0/AGA10_h12_reviwed_contig.fasta")
+write_fasta(pull(CORRECTED_CONTIGS_sq,sq),pull(CORRECTED_CONTIGS_sq,name),paste0(SAVE_DIR,"/",PREFIX,"hap12.contigs.reviewed.fasta"))
 
 rm(CORRECTED_CONTIGS_sq)
 
@@ -208,7 +218,7 @@ CORRECTED_CONTIGS %>%
          start,
          end,
          contig = name) %>%
-  fwrite("/Users/mojtabajahani/Downloads/AGA10_r0/AGA_h12_reviwed_contig_chr_coord",
+  fwrite(paste0(SAVE_DIR,"/",PREFIX,"hap12.reviwed_contig_chr_coord"),#"/Users/mojtabajahani/Downloads/AGA10_r0/AGA_h12_reviwed_contig_chr_coord"
          sep = "\t",
          quote = F,
          col.names = F)
