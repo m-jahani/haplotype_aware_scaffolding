@@ -8,10 +8,10 @@ ASSEM2 <- args[2] #"/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA
 PREFIX <- args[3]
 SAVE_DIR <- args[4]
 
-MIX_ASSEM <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1_AGA10.hic.hap2.review.assembly"
-MIX_FASTA <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1.p_ctg_AGA10.hic.hap2.p_ctg.fasta"
-PREFIX <- "AGA10"
-SAVE_DIR <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022"
+# MIX_ASSEM <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1_AGA10.hic.hap2.review.assembly"
+# MIX_FASTA <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1.p_ctg_AGA10.hic.hap2.p_ctg.fasta"
+# PREFIX <- "AGA10"
+# SAVE_DIR <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022"
 ####################################################################Read Data#####################################################################   
 # read *reviewed assembly hap1_hap2 ()assembly file after juicebox curation
 read.table(MIX_ASSEM,
@@ -219,11 +219,8 @@ CORRECTED_CONTIGS %>%
          end,
          contig = name) %>%
   fwrite(paste0(SAVE_DIR,"/",PREFIX,"hap12.reviwed_contig_chr_coord"),#"/Users/mojtabajahani/Downloads/AGA10_r0/AGA_h12_reviwed_contig_chr_coord"
-         sep = "\t",
+         sep = "\t", 
          quote = F,
          col.names = F)
 
 rm(CORRECTED_CONTIGS)
-  
-  
-  
