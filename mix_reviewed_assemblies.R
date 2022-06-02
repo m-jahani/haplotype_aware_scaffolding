@@ -1,6 +1,6 @@
 library(data.table)
 library(tidyverse)
-library(data.table)
+
 
 args = commandArgs(trailingOnly = TRUE)
 
@@ -16,13 +16,13 @@ save_dir <- args[4]
 # read *reviewed assembly hap1
 read.table(ASSEM1,
            fill = TRUE, 
-           col.names = paste("V", 1:100, sep = "")# with the assumption that each chromosome does not contain more than 100 conigs 
+           col.names = paste("V", 1:10000, sep = "")# with the assumption that each chromosome does not contain more than 10000 conigs 
            ) -> HAP1
 
 # read *reviewed assembly hap2
 read.table(ASSEM2, 
            fill = TRUE, 
-           col.names = paste("V", 1:100, sep = "")) -> HAP2
+           col.names = paste("V", 1:10000, sep = "")) -> HAP2
 
 # read minimap2 alignment between hap1 and hap2 contigs
 read.table(map_hap12,
@@ -103,13 +103,11 @@ rm(CONTIG_LENGTH_HAP2)
 rbind(DATA_HAP1,
       DATA_HAP2) %>%
   arrange(
-    desc(total_length)) %>% 
+    desc(total_length)) %>%
   mutate(new_order = row_number()) %>%
   select(fragment_ID,
          new_order,
          length) -> HAP1_HAP2_CONTOGS_NEW_ORDER
-
-##################################################Contig orders with mixed haps in each chromosome####################################################
 
 #new order to original order
 rbind(DATA_HAP1,
@@ -124,10 +122,10 @@ rbind(DATA_HAP1,
 #Extract chromosome info for hap1
 HAP1 %>% 
   filter(!grepl("^>",V1)) %>% 
-  mutate(CHR = row_number()) %>%
-  gather(contig_order_in_chr, original_order_sign, V1:V100) %>%
-  filter(!is.na(original_order_sign)) %>%
-  mutate(contig_order_in_chr=as.numeric(gsub("V","",contig_order_in_chr))) %>%
+  mutate(CHR = row_number()) %>% 
+  gather(contig_order_in_chr, original_order_sign, V1:V10000) %>% 
+  filter(!is.na(original_order_sign)) %>% 
+  mutate(contig_order_in_chr=as.numeric(gsub("V","",contig_order_in_chr)))  %>%
   mutate(original_order = abs(as.numeric(original_order_sign))) %>%
   arrange(CHR,
           contig_order_in_chr) %>% 
@@ -141,7 +139,7 @@ CHR_CONTIG_HAP1_INFO %>%
                 HAP1,grepl("^>",V1)),
               original_order = V2,
               length = V3) ) %>% 
-  group_by(HAP,CHR) %>%
+  group_by(HAP,CHR) %>% 
   summarise(CHR_length=sum(length)) %>% 
   ungroup()  -> CHR_LENGTH_HAP1
 
@@ -149,7 +147,7 @@ CHR_CONTIG_HAP1_INFO %>%
 HAP2 %>%
   filter(!grepl("^>",V1)) %>%
   mutate( CHR = row_number()) %>%
-  gather(contig_order_in_chr, original_order_sign, V1:V100) %>%
+  gather(contig_order_in_chr, original_order_sign, V1:V10000) %>%
   filter(!is.na(original_order_sign)) %>%
   mutate(contig_order_in_chr=as.numeric(gsub("V","",contig_order_in_chr))) %>%
   mutate(original_order=abs(as.numeric(original_order_sign))) %>%
@@ -308,7 +306,7 @@ rbind(CHR_CONTIG_HAP1_INFO,
   full_join(.,
             CHR_LENGTH_HAP12) %>% 
   full_join(.,
-            ORDER) %>% 
+            ORDER)  %>% 
   mutate(new_order_sign=if_else(as.numeric(original_order_sign) > 0,
                                 (new_order*1),
                                 (new_order*-1)
@@ -318,8 +316,8 @@ rbind(CHR_CONTIG_HAP1_INFO,
          CHR,
          CHR_length,
          contig_order_in_chr,
-         new_order_sign) %>% 
-  spread(contig_order_in_chr,new_order_sign) %>%
+         new_order_sign)  %>% 
+  spread(contig_order_in_chr,new_order_sign)  %>%
   left_join(.,CHR_HAP_ORDER) %>%
   arrange(chr_hap_ord,
           desc(CHR_length))  %>%
@@ -346,5 +344,3 @@ rbind(CHR_CONTIG_HAP1_INFO,
  
 rm(HAP1_HAP2_CONTOGS_NEW_ORDER,
    CHR_ORDER_HAP12)
-
-
