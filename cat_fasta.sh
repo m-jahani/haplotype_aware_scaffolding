@@ -1,7 +1,9 @@
 #!/bin/bash
+
 FASTA1=$1
 FASTA2=$2
 SAVE_DIR=$3
+
 FASTA1_FILE=${FASTA1##*/}
 FASTA2_FILE=${FASTA2##*/}
 
