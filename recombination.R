@@ -28,7 +28,7 @@ fread(FIVE_PRIM) %>%
   filter(same != FALSE) %>% #filter out markers that each boundary mapped on a different scaffold
   select(Marker,scaffold = RNAME_5,POS_5,POS_3) -> mapped_markers
 
-fread("/Users/mojtabajahani/Documents/Cannabis Genetic map/MSTmap_4_GAPP_project.csv") %>%
+fread(LINKAGE_MAP) %>%
   inner_join(.,mapped_markers) %>%
   mutate(ID=paste0(`Linkage group`,"::",`Genetic distance (cM)`)) %>% 
   mutate(BP_position = rowMeans(select(., starts_with("POS")), na.rm = TRUE)) %>%  #mean value of position 3 prime and 5 prime as marker position
