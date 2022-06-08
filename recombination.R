@@ -48,18 +48,20 @@ genetic_map_AK_HAP2 %>%
   select(scaffold,BP_position,recomb_rate)  %>% 
   filter(!is.na(recomb_rate)) %>%
   fwrite(paste0(SAVE_DIR,
+                "/",
                 gsub(".sam","",gsub("3_primeBoundary_","",gsub(".*/","",THREE_PRIM))),
-                "recombination"),
+                ".recombination"),
          sep = "\t",
          col.names = F,
          quote = F)
 
 genetic_map_AK_HAP2 %>%
   fwrite(paste0(SAVE_DIR,
+                "/",
                 gsub(".sam","",
                      gsub("3_primeBoundary_","",
                           gsub(".*/","",THREE_PRIM))),
-                "GeneticMap"),
+                ".GeneticMap"),
          sep = "\t",
          col.names = F,
          quote = F)
