@@ -213,7 +213,7 @@ CORRECTED_CONTIGS %>%
   arrange(Chromosome,contig_order_in_chr) %>% 
   mutate(end = cumsum(length) ) %>% 
   ungroup() %>% 
-  mutate(start = ifelse(contig_order_in_chr == 1,1,lag(end))) %>%
+  mutate(start = ifelse(contig_order_in_chr == 1,1,lag(end)+1)) %>%
   select(Chromosome,
          start,
          end,
