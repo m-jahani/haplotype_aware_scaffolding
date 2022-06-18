@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#raw assembly
+RAW_CONTIGS_HAP1=$1 #/DATA/home/mjahani/ASSEMBLIES/AGA10/AGA10_ASSEMBLY_RESULT_STAT/AGA10.hic.hap1.p_ctg.fasta
+RAW_CONTIGS_HAP2=$2 #/DATA/home/mjahani/ASSEMBLIES/AGA10/AGA10_ASSEMBLY_RESULT_STAT/AGA10.hic.hap2.p_ctg.fasta
+#assembly graph
+RAW_CONTIGS_HAP1_GRAPH=$3 #/DATA/home/mjahani/ASSEMBLIES/AGA10/AGA10_HIFIasm_ASSEMBLY/AGA10.hic.hap1.p_ctg.gfa
+RAW_CONTIGS_HAP2_GRAPH=$4 #/DATA/home/mjahani/ASSEMBLIES/AGA10/AGA10_HIFIasm_ASSEMBLY/AGA10.hic.hap2.p_ctg.gfa
+#linkage map markers
+prime_3=$5      #/DATA/home/mjahani/test/3_primeBoundary.fasta
+prime_5=$6      #/DATA/home/mjahani/test/5_primeBoundary.fasta
+LINKAGE_DATA=$7 #/DATA/home/mjahani/curation_AGA10/MSTmap_4_GAPP_project.csv
+SAVE_DIR=$8     #/DATA/home/mjahani/curation_AGA10/TEMP_TEST/result
+
+bash MAPLINKAGE.sh $RAW_CONTIGS_HAP1 $prime_3 $prime_5 $SAVE_DIR
+Rscript recombination.R ${SAVE_DIR}/$(basename "${prime_3%%.fasta}")_$(basename "${RAW_CONTIGS_HAP1%%.fasta}.sam") ${SAVE_DIR}/$(basename "${prime_5%%.fasta}")_$(basename "${RAW_CONTIGS_HAP1%%.fasta}.sam") $LINKAGE_DATA $SAVE_DIR
+
+bash MAPLINKAGE.sh $RAW_CONTIGS_HAP2 $prime_3 $prime_5 $SAVE_DIR
+Rscript recombination.R ${SAVE_DIR}/$(basename "${prime_3%%.fasta}")_$(basename "${RAW_CONTIGS_HAP2%%.fasta}.sam") ${SAVE_DIR}/$(basename "${prime_5%%.fasta}")_$(basename "${RAW_CONTIGS_HAP2%%.fasta}.sam") $LINKAGE_DATA $SAVE_DIR
+
+bash TELOMERE.sh $RAW_CONTIGS_HAP1 200000 $(basename ${RAW_CONTIGS_HAP1%.fasta}) $SAVE_DIR
+bash TELOMERE.sh $RAW_CONTIGS_HAP2 200000 $(basename ${RAW_CONTIGS_HAP2%.fasta}) $SAVE_DIR
+
+bash GFA2DEPTH.sh $RAW_CONTIGS_HAP1_GRAPH SAVE_DIR
+bash GFA2DEPTH.sh $RAW_CONTIGS_HAP2_GRAPH SAVE_DIR
+
+bash EDTA.sh $RAW_CONTIGS_HAP1 $SAVE_DIR &
+bash EDTA.sh $RAW_CONTIGS_HAP2 $SAVE_DIR
+
+bash minimap.sh $RAW_CONTIGS_HAP1 $RAW_CONTIGS_HAP2 $SAVE_DIR
