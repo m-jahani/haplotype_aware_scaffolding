@@ -1,5 +1,5 @@
 #!/bin/bash
-
+eval "$(command conda 'shell.bash' 'hook' 2>/dev/null)"
 conda activate scaff_env
 
 ASSEMBLY1=$1 #/DATA/home/mjahani/opt/juicer/scaffolding/AGA10_hap1/3D_DNA/AGA10.hic.hap1.p_ctg.final.fasta
