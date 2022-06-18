@@ -1,4 +1,5 @@
 #!/bin/bash
+
 eval "$(command conda 'shell.bash' 'hook' 2>/dev/null)"
 conda activate EDTA
 FASTA=$1 #/DATA/home/mjahani/curation_AGA10/AGA10hap1.reviewed.chr_assembled.fasta
