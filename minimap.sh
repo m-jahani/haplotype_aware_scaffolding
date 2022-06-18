@@ -8,4 +8,4 @@ SAVE_DIR=$3  #/DATA/home/mjahani/curation_AGA10
 ASSEMBLY1_FILE=${ASSEMBLY1##*/}
 ASSEMBLY2_FILE=${ASSEMBLY2##*/}
 
-/DATA/home/mjahani/bin/minimap2/minimap2 -x asm10 -t 152 $ASSEMBLY1 $ASSEMBLY2 >${ASSEMBLY1_FILE%%.p_ctg.final.fasta}_${ASSEMBLY2_FILE%%.p_ctg.final.fasta}.paf
+/DATA/home/mjahani/bin/minimap2/minimap2 -x asm10 -t 152 $ASSEMBLY1 $ASSEMBLY2 >${SAVE_DIR}/$(basename "${RAW_CONTIGS_HAP1%%.fasta}")_$(basename "${RAW_CONTIGS_HAP2%%.fasta}").paf
