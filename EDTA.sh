@@ -7,8 +7,8 @@ SAVEDIR=$2
 
 FASTA_BASE=${FASTA##*/}
 
-#bioawk -c fastx '{ print $name, length($seq) }' $FASTA | sort -k2nr | cut -f1 | head -10 >${SAVEDIR}/${FASTA_BASE%%.fasta}_CHR_LIST
-bioawk -c fastx '{ print $name, length($seq) }' $FASTA | cut -f1 >${SAVEDIR}/${FASTA_BASE%%.fasta}_CHR_LIST
+bioawk -c fastx '{ print $name, length($seq) }' $FASTA | sort -k2nr | cut -f1 | head -10 >${SAVEDIR}/${FASTA_BASE%%.fasta}_CHR_LIST
+#bioawk -c fastx '{ print $name, length($seq) }' $FASTA | cut -f1 >${SAVEDIR}/${FASTA_BASE%%.fasta}_CHR_LIST
 while read SCAFFOLD; do
     echo $SCAFFOLD >${SAVEDIR}/${SCAFFOLD}.txt
     mkdir -p ${SAVEDIR}/${FASTA_BASE%%.fasta}/${SCAFFOLD}
