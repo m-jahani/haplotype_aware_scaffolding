@@ -5,7 +5,8 @@ args = commandArgs(trailingOnly = TRUE)
 
 MIX_ASSEM <- args[1] #"/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1_AGA10.hic.hap2.review.assembly"
 PREFIX <- args[2] #AGA10
-SAVE_DIR <- args[3]
+MIX_FASTA <- args[3]
+SAVE_DIR <- args[4]
 
 # MIX_ASSEM <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1_AGA10.hic.hap2.review.assembly"
 # MIX_FASTA <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1.p_ctg_AGA10.hic.hap2.p_ctg.fasta"
