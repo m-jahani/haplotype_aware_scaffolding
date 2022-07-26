@@ -1,11 +1,11 @@
 library(tidyverse)
 library(tidysq)
-
+library(data.table)
 args = commandArgs(trailingOnly = TRUE)
 
 MIX_ASSEM <- args[1] #"/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1_AGA10.hic.hap2.review.assembly"
-ASSEM2 <- args[2] #"/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1.p_ctg_AGA10.hic.hap2.p_ctg.fasta"
-PREFIX <- args[3]
+PREFIX <- args[2] #AGA10
+MIX_FASTA <- args[3]
 SAVE_DIR <- args[4]
 
 # MIX_ASSEM <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/AGA10.hic.hap1_AGA10.hic.hap2.review.assembly"
@@ -18,7 +18,6 @@ read.table(MIX_ASSEM,
       fill = TRUE, 
       col.names = paste("V", 1:100, sep = "")# with the assumption that each chromosome does not contain more than 100 conigs 
 ) -> HAP12_assembly
-
 
 read_fasta(MIX_FASTA) -> HAP12_FASTA #merged hap1 and hap2 contigs
 ##################################################Contigs/fragment/Debris order in assembly file####################################################          
@@ -101,23 +100,40 @@ HAP12_assembly %>%
             select(filter(HAP12_assembly,grepl("^>",V1)),fragment_ID = V1,original_order = V2),
             by=c("order"="original_order")) %>% 
   mutate(fragment_ID = gsub(">","",fragment_ID)) %>% 
-  mutate(HAP = ifelse(grepl("h1",fragment_ID),"H1","H2")) %>% 
-  group_by(HAP) %>%
-    arrange(HAP,CHR)  %>%
-    mutate(NEW_CHR = as.integer(factor(CHR))) %>%
+  mutate(HAP = ifelse(grepl("h1",fragment_ID),"H1","H2")) -> mid_data
+
+#to solve the problem of moving contigs between scaffolds of different haplotypes
+mid_data %>%
+  group_by(CHR,HAP) %>% 
+  tally() %>% 
   ungroup() %>% 
-  mutate(Chromosome=paste(HAP,"HiC_scaffold",NEW_CHR,sep = "_")) %>% 
+  group_by(CHR) %>% 
+  filter(n==max(n)) %>% 
+  ungroup() %>% 
+  select(CHR,HAP_new = HAP) -> CHRHAP
+
+mid_data %>% 
+  full_join(.,
+            CHRHAP) %>%
+  group_by(HAP_new) %>% 
+    arrange(HAP_new,CHR) %>%
+    mutate(NEW_CHR = as.integer(factor(CHR))) %>% 
+  ungroup() %>% 
+  mutate(Chromosome = paste(HAP_new,"HiC_scaffold",NEW_CHR,sep = "_")) %>% 
   mutate(orientation = ifelse(order_sign<0,"R","F")) %>% 
   select(Chromosome,
          contig_order_in_chr,
          fragment_ID,
          orientation) -> CONTIG_ORDER_CHR 
 
+rm(mid_data,
+CHRHAP)
+
 HAP12_FASTA_FRAG %>% 
   full_join(.,
             CONTIG_ORDER_CHR,by=c("name" = "fragment_ID")) -> REV_FOR_CONTIG
 
-rm(CONTIG_ORDER_CHR,
+rm(#CONTIG_ORDER_CHR,
    HAP12_FASTA_FRAG,
    HAP12_assembly)
 #only fragments that needs to be reverse complemented
@@ -188,10 +204,10 @@ FINAL_FASTA %>%
   select(-length)-> FINAL_FASTA
   
 #save assembled contigs for haplotype 1
-write_fasta(pull(filter(FINAL_FASTA,grepl("^H1",name)),sq),pull(filter(FINAL_FASTA,grepl("^H1",name)),name),paste0(SAVE_DIR,"/",PREFIX,"hap1.reviewed.chr_assembled.fasta"))
+write_fasta(pull(filter(FINAL_FASTA,grepl("^H1",name)),sq),pull(filter(FINAL_FASTA,grepl("^H1",name)),name),paste0(SAVE_DIR,"/",PREFIX,"_hap1.reviewed.chr_assembled.fasta"))
 
 #save assembled contigs for haplotype 2
-write_fasta(pull(filter(FINAL_FASTA,grepl("^H2",name)),sq),pull(filter(FINAL_FASTA,grepl("^H2",name)),name),paste0(SAVE_DIR,"/",PREFIX,"hap2.reviewed.chr_assembled.fasta"))
+write_fasta(pull(filter(FINAL_FASTA,grepl("^H2",name)),sq),pull(filter(FINAL_FASTA,grepl("^H2",name)),name),paste0(SAVE_DIR,"/",PREFIX,"_hap2.reviewed.chr_assembled.fasta"))
 
 rm(FINAL_FASTA)
 
@@ -201,7 +217,7 @@ CORRECTED_CONTIGS %>%
          -contig_order_in_chr) %>%
   arrange(name) -> CORRECTED_CONTIGS_sq
   
-write_fasta(pull(CORRECTED_CONTIGS_sq,sq),pull(CORRECTED_CONTIGS_sq,name),paste0(SAVE_DIR,"/",PREFIX,"hap12.contigs.reviewed.fasta"))
+write_fasta(pull(CORRECTED_CONTIGS_sq,sq),pull(CORRECTED_CONTIGS_sq,name),paste0(SAVE_DIR,"/",PREFIX,"_hap12.contigs.reviewed.fasta"))
 
 rm(CORRECTED_CONTIGS_sq)
 
@@ -218,9 +234,13 @@ CORRECTED_CONTIGS %>%
          start,
          end,
          contig = name) %>%
-  fwrite(paste0(SAVE_DIR,"/",PREFIX,"hap12.reviwed_contig_chr_coord"),#"/Users/mojtabajahani/Downloads/AGA10_r0/AGA_h12_reviwed_contig_chr_coord"
+  full_join(.,
+            select(CONTIG_ORDER_CHR,Chromosome,contig=fragment_ID,orientation)) %>%
+  fwrite(paste0(SAVE_DIR,"/",PREFIX,"_hap12.reviwed_contig_chr_coord"),#"/Users/mojtabajahani/Downloads/AGA10_r0/AGA_h12_reviwed_contig_chr_coord"
          sep = "\t", 
          quote = F,
          col.names = F)
 
 rm(CORRECTED_CONTIGS)
+
+
