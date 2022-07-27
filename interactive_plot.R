@@ -7,8 +7,8 @@ options(scipen = 9999)
 WIND_SIZE=200000 #EDTA window size
 args = commandArgs(trailingOnly = TRUE)
 ##########################################################
-original_coordinates_file  <- args[1]
-coordinates_file <- args[2]
+original_coordinates_file  <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/MANUAL CURATION/PLOT/AGA10_hap12.reviwed_contig_chr_coord"
+coordinates_file <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/MANUAL CURATION/PLOT/AGA10_Round2_hap12.reviwed_contig_chr_coord"
 
 geneticmap_hap1 <- args[3]
 geneticmap_hap2 <- args[4]
@@ -22,7 +22,7 @@ telomere_hap2 <- args[8]
 EDTA_hap1 <- args[9]
 EDTA_hap2 <- args[10]
 
-Synteny <- args[11]
+Synteny <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/MANUAL CURATION/PLOT/AGA10_Round2_hap1.reviewed.chr_assembled_AGA10_Round2_hap2.reviewed.chr_assembled.paf"
 SAVE_DIR <- args[12]
 ##########################################################Functions
 #calculate the start and end position of fragmented contigs and their coordinates in scaffolds
@@ -332,18 +332,54 @@ fread(EDTA_hap1) %>%
          position = start,
          value) -> LTR
 ##########################################################Synteny
+fread(coordinates_file) %>% 
+  group_by(V1) %>%
+  summarise(scaf_length=max(V3)) %>% 
+  separate(V1, 
+           into = c("hap","scaf_num"), 
+           sep="_HiC_scaffold_", 
+           remove = F) %>%
+  arrange(as.numeric(scaf_num)) %>%
+  mutate(length = lag(scaf_length)) %>%
+  mutate(length = replace_na(length, 0)) %>%
+  mutate(cum_length = cumsum(length)) %>%
+  select(V1,
+         cum_length) -> scf_length
+
 read_paf(Synteny) %>%
   as.data.frame() %>% 
   filter(mapq > 0) %>% 
   mutate(new_strand=ifelse(strand=="+","Forward","Reverse"))%>%
   mutate(new_tstart= ifelse(new_strand == "Forward",tstart,tend)) %>% 
-  mutate(new_tend= ifelse(new_strand == "Forward",tend,tstart)) %>%
+  mutate(new_tend= ifelse(new_strand == "Forward",tend,tstart)) %>% 
   select(qname,
          qstart,
          qend,
          tname,
          tstart = new_tstart,
-         tend = new_tend)-> SYNTENY
+         tend = new_tend,
+         new_strand) %>% 
+  full_join(.,
+            rename(scf_length,
+                   qname = V1)) %>% 
+  mutate(qmap_start = ifelse(new_strand == "Forward",
+                             as.numeric(qstart) + as.numeric(cum_length),
+                             as.numeric(qend) + as.numeric(cum_length))) %>%
+  mutate(qmap_end = ifelse(new_strand == "Forward",
+                           as.numeric(qend) + as.numeric(cum_length),
+                           as.numeric(qstart) + as.numeric(cum_length))) %>%
+  select(-cum_length) %>%
+  full_join(.,
+            rename(scf_length,
+                   tname = V1)) %>% 
+  mutate(tmap_start = ifelse(new_strand == "Forward",
+                             as.numeric(tstart) + as.numeric(cum_length),
+                             as.numeric(tend) + as.numeric(cum_length))) %>%
+  mutate(tmap_end = ifelse(new_strand == "Forward",
+                           as.numeric(tend) + as.numeric(cum_length),
+                           as.numeric(tstart) + as.numeric(cum_length))) %>%
+  select(-cum_length) -> SYNTENY
+  
 ###########################################################################################################
 ################################################DRAWING PLOTS##############################################
 ###########################################################################################################
@@ -384,7 +420,9 @@ for (CHR in seq(10)) {
     geom_segment(aes(x = tstart, 
                      xend = tend, 
                      y = qstart, 
-                     yend = qend
+                     yend = qend,
+                     tmap_start = tmap_start,
+                     tmap_end = tmap_end
     )) +
     scale_x_continuous(name ="Position (bp)", 
                        expand = c(0, 0),
@@ -416,7 +454,9 @@ for (CHR in seq(10)) {
     geom_segment(aes(x = qstart, 
                      xend = qend, 
                      y = tstart, 
-                     yend = tend
+                     yend = tend,
+                     qmap_start = qmap_start,
+                     qmap_end = qmap_end
     )) +
     scale_x_continuous(name ="Position", 
                        expand = c(0, 0),
