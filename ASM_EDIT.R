@@ -5,13 +5,13 @@ library(data.table)
 options(scipen = 9999)
 args = commandArgs(trailingOnly = TRUE)
 
-MIX_ASSEM <- args[1]
-bed_file <- args[2]
-PREFIX <- args[3]
+# MIX_ASSEM <- args[1]
+# bed_file <- args[2]
+# PREFIX <- args[3]
 
-# MIX_ASSEM <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/MANUAL CURATION/HiC_map/AGA10.hic.hap1.p_ctg_AGA10.hic.hap2.p_ctg.3.review.assembly"
-# bed_file <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/MANUAL CURATION/PLOT/test_edit_asm.csv" #two culmns, scaffold name:(H1_HiC_scaffold_10), location to cut on scaffold: 53000
-# PREFIX <- "edit1"
+MIX_ASSEM <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/MANUALCURATION/HiC_map/AGA10.hic.hap1.p_ctg_AGA10.hic.hap2.p_ctg.review.assembly"
+bed_file <- "/Users/mojtabajahani/Downloads/AGA10_r0/new_30_june_2022/MANUALCURATION/PLOT/edit1_asm.csv" #two culmns, scaffold name:(H1_HiC_scaffold_10), location to cut on scaffold: 53000
+PREFIX <- "Edit1"
 ####################################################################Read Data#####################################################################   
 # read *reviewed assembly hap1_hap2 ()assembly file after juicebox curation
 read.table(MIX_ASSEM,
@@ -19,7 +19,8 @@ read.table(MIX_ASSEM,
       col.names = paste("V", 1:100, sep = "")# with the assumption that each chromosome does not contain more than 100 conigs 
 ) -> HAP12_assembly
 
-fread(bed_file) -> bed
+fread(bed_file) %>%
+  arrange(V1,as.numeric(V2)) -> bed
 ##################################################Contigs/fragment/Debris order in assembly file####################################################          
 #Extract chromosome info for assembly file
 HAP12_assembly %>% 
@@ -80,10 +81,9 @@ mid_data %>%
          order) -> CONTIG_ORDER_CHR 
 
 
-for (i in 1:nrow(bed)) {
+for (i in 1:nrow(bed)) { #1:nrow(bed)
   
-
-CONTIG_ORDER_CHR %>% 
+CONTIG_ORDER_CHR %>%
   filter(Chromosome == as.character(bed[i,1])) %>%
   filter(start <= as.numeric(bed[i,2])) %>%
   filter(end >= as.numeric(bed[i,2]))  -> target_contig
@@ -91,11 +91,13 @@ CONTIG_ORDER_CHR %>%
 target_contig %>%
   mutate(Fragment_order = as.numeric(replace_na(Fragment_order,"1"))) %>%
   mutate(Fragment = replace_na(Fragment,"fragment")) %>%
-  mutate(end = as.numeric(bed[i,2]) ) %>%
-  mutate(length = (as.numeric(end) - as.numeric(start)))-> row_one
-  
+  mutate(end = as.numeric(bed[i,2]) ) %>% 
+  mutate(length = ifelse(as.numeric(start)==1,
+                         (as.numeric(end) - as.numeric(start))+1,
+                         (as.numeric(end) - as.numeric(start)))) -> row_one
+
 target_contig %>%
-  mutate(Fragment = "fragment") %>% 
+  mutate(Fragment = "fragment") %>%
   mutate(Fragment_order = ifelse(is.na(Fragment_order),
     as.numeric(row_one[1,5])+1,
    max(
@@ -114,28 +116,30 @@ target_contig %>%
   mutate(length = (as.numeric(end) - as.numeric(start))) -> row_two
 
 rbind(row_one,
-      row_two) %>% 
+      row_two) %>%
   mutate(fragment_ID = paste0(contig,":::",Fragment,"_",Fragment_order)) -> edited_fragments
 
-CONTIG_ORDER_CHR %>% 
-  filter(Chromosome == as.character(bed[i,1])) %>% 
-  filter(fragment_ID != as.character(target_contig[1,2])) %>% 
-  mutate(contig_order_in_chr = as.numeric(contig_order_in_chr))  %>% 
+sum(edited_fragments$length)
+
+CONTIG_ORDER_CHR %>%
+  filter(Chromosome == as.character(bed[i,1])) %>%
+  filter(fragment_ID != as.character(target_contig[1,2])) %>%
+  mutate(contig_order_in_chr = as.numeric(contig_order_in_chr))  %>%
   mutate(contig_order_in_chr = ifelse(contig_order_in_chr < as.numeric(max(edited_fragments[,6])) , contig_order_in_chr,contig_order_in_chr+1)) %>%
   arrange(contig_order_in_chr)  %>%
   rbind(.,
   filter(CONTIG_ORDER_CHR,Chromosome != as.character(bed[i,1]))) %>%
-  mutate(order = as.numeric(order))  %>% 
-  mutate(order = ifelse(order < as.numeric(max(edited_fragments[,11])) , order,order+1)) %>% 
+  mutate(order = as.numeric(order))  %>%
+  mutate(order = ifelse(order < as.numeric(max(edited_fragments[,11])) , order,order+1)) %>%
   rbind(.,
-        edited_fragments) %>% 
+        edited_fragments) %>%
   separate(Chromosome,into = c("HAP","num"),sep = "_HiC_scaffold_",remove=F) %>%
   arrange(as.numeric(num),HAP,contig_order_in_chr) %>%
   select(-HAP,-num)  ->  CONTIG_ORDER_CHR
 
 rm(target_contig,row_one,row_two,edited_fragments)
 }
-  
+
 CONTIG_ORDER_CHR %>% 
   arrange(order) %>%
   mutate(V1=paste0(">",fragment_ID)) %>% 
