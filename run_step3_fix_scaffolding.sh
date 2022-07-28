@@ -42,3 +42,7 @@ ${RESULT_DIR}/${SAMPLE}/CONTIG_INFO/${ID_HAP2}.reviewed.chr_assembled.EDTA.bed \
 ${RESULT_DIR}/${SAMPLE}/ASM2FASTA/Round${curation_round}/${SAMPLE}_Round${curation_round}_hap1.reviewed.chr_assembled_${SAMPLE}_Round${curation_round}_hap2.reviewed.chr_assembled.paf \
 ${RESULT_DIR}/${SAMPLE}/PLOT/Round${curation_round}
 
+Rscript ${bin}/breakingPoint.R \
+    ${RESULT_DIR}/${SAMPLE}/CONTIG_INFO/${ID_HAP1}.reviewed.chr_assembled_${ID_HAP2}.reviewed.chr_assembled.paf \
+    ${RESULT_DIR}/${SAMPLE}/PLOT/original
+
