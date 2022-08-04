@@ -75,16 +75,18 @@ HAP12_FASTA %>%
   filter(!name %in%  pull(distinct(coord_fragments,contig))) %>% 
   bind_rows(.,
             FRAGMENTED_CONTIGS) -> HAP12_FASTA_FRAG
+      
+      rm(HAP12_FASTA,
+        coord_fragments,
+        FRAGMENTED_CONTIGS,
+        CONTIG)
+      HAP12_FASTA_FRAG ->HAP12_FASTA_FRAG HAP12_FASTA 
+      rm(HAP12_FASTA_FRAG)
 }else {
   print("NO fragmented contig")
 }
 
-rm(FRAGMENTS,
-   HAP12_FASTA,
-   coord_fragments,
-   FRAGMENTED_CONTIGS,
-   CONTIG)
-
+rm(FRAGMENTS)
 
 #Extract chromosome info for assembly file
 HAP12_assembly %>% 
@@ -129,12 +131,12 @@ mid_data %>%
 rm(mid_data,
 CHRHAP)
 
-HAP12_FASTA_FRAG %>% 
+HAP12_FASTA %>% 
   full_join(.,
             CONTIG_ORDER_CHR,by=c("name" = "fragment_ID")) -> REV_FOR_CONTIG
 
 rm(#CONTIG_ORDER_CHR,
-   HAP12_FASTA_FRAG,
+   HAP12_FASTA,
    HAP12_assembly)
 #only fragments that needs to be reverse complemented
 REV_FOR_CONTIG %>%
