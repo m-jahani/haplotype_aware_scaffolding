@@ -80,7 +80,7 @@ HAP12_FASTA %>%
         coord_fragments,
         FRAGMENTED_CONTIGS,
         CONTIG)
-      HAP12_FASTA_FRAG ->HAP12_FASTA_FRAG HAP12_FASTA 
+      HAP12_FASTA_FRAG -> HAP12_FASTA_FRAG 
       rm(HAP12_FASTA_FRAG)
 }else {
   print("NO fragmented contig")
