@@ -2,7 +2,7 @@ library(data.table)
 library(tidyverse)
 
 
-#args = commandArgs(trailingOnly = TRUE)
+args = commandArgs(trailingOnly = TRUE)
 
 ASSEM1 <- args[1] #reviewed assembly hap1 #"/Users/mojtabajahani/Downloads/AGA10_r0/AGA10.hic.hap1.p_ctg.0.assembly"
 ASSEM2 <- args[2] #reviewed assembly hap2 #"/Users/mojtabajahani/Downloads/AGA10_r0/AGA10.hic.hap2.p_ctg.0.assembly"
