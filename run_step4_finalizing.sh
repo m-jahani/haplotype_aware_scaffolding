@@ -14,3 +14,8 @@ Rscript ${bin}/ASM2FASTA_GAP.R \
     ${SAMPLE}_FINAL_GAP \
     ${RESULT_DIR}/${SAMPLE}/sequences/$(basename ${ASSEMBLY_hap1%%.fasta})_$(basename ${ASSEMBLY_hap2%%.fasta}).fasta \
     ${RESULT_DIR}/${SAMPLE}/ASM2FASTA/FINAL_GAP
+
+bash ${bin}/minimap.sh \
+    ${RESULT_DIR}/${SAMPLE}/ASM2FASTA/FINAL_GAP/${SAMPLE}_FINAL_GAP_hap1.reviewed.chr_assembled.fasta \
+    ${RESULT_DIR}/CS10_assembly/GCF_900626175.2_cs10_10CHR.fa \
+    ${RESULT_DIR}/${SAMPLE}/minimap
