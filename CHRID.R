@@ -9,10 +9,10 @@ GAP_FASTA <- args[2]
 PREFIX <- args[3] #AGA10_Hap1
 SAVE_DIR <- args[4]
 
-GAP_FASTA <- "/DATA/home/mjahani/CURATION/AGA10/ASM2FASTA/FINAL_GAP/AGA10_FINAL_GAP_hap1.reviewed.chr_assembled.fasta"
-MAP <- "/DATA/home/mjahani/CURATION/AGA10/minimap/AGA10_FINAL_GAP_hap1.reviewed.chr_assembled_GCF_900626175.2_cs10_10CHR.fa.paf" 
-PREFIX <- "AGA10_Hap1"
-SAVE_DIR <- "/DATA/home/mjahani/CURATION"
+# GAP_FASTA <- "/DATA/home/mjahani/CURATION/AGA10/ASM2FASTA/FINAL_GAP/AGA10_FINAL_GAP_hap1.reviewed.chr_assembled.fasta"
+# MAP <- "/DATA/home/mjahani/CURATION/AGA10/minimap/AGA10_FINAL_GAP_hap1.reviewed.chr_assembled_GCF_900626175.2_cs10_10CHR.fa.paf" 
+# PREFIX <- "AGA10_Hap1"
+# SAVE_DIR <- "/DATA/home/mjahani/CURATION"
 
 
 
