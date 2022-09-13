@@ -41,5 +41,5 @@ bash ${bin}/minimap.sh \
 Rscript ${bin}/CHRID.R \
     ${RESULT_DIR}/${SAMPLE}/minimap/$(basename "${GENOME_ASSEMBLY_HAP2%%.fasta}")_$(basename "${CS10_ASSEMBLY%%.fasta}").paf \
     $GENOME_ASSEMBLY_HAP2 \
-    ${SAMPLE}_Hap2cd mini \
+    ${SAMPLE}_Hap2 \
     ${RESULT_DIR}/${SAMPLE}/ASM2FASTA/FINAL_ASSEMBLY
