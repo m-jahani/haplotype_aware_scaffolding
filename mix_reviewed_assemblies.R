@@ -234,7 +234,7 @@ CONTIG_DATA %>%
             select(CONTIG_DATA,
                    corresponding = contig,
                    new_order_cor = new_order)
-            ) %>%
+  ) %>%
   select(-corresponding) %>%
   filter(!is.na(new_order_cor),
          !is.na(HAP)) -> CONTIG_COR
@@ -260,9 +260,13 @@ DATA_CHR_PAIR %>% filter(HAP==2) %>% select(CHR_HAP2 = CHR, new_order_hap2 = new
 
 rm(DATA_CHR_PAIR)
 
- full_join(DATA_CHR_PAIR_HAP1,DATA_CHR_PAIR_HAP2) %>% 
+full_join(DATA_CHR_PAIR_HAP1,DATA_CHR_PAIR_HAP2) %>% 
+  left_join(.,select(HAP1_HAP2_CONTOGS_NEW_ORDER,new_order_hap1=new_order,length_hap1=length)) %>%
+  left_join(.,select(HAP1_HAP2_CONTOGS_NEW_ORDER,new_order_hap2=new_order,length_hap2=length)) %>%
+  mutate(average_length_cor_contig= ((length_hap1+length_hap2)/2)) %>%
    group_by(CHR_HAP1,CHR_HAP2) %>%
-   tally() %>%
+   summarise(n=n(),sum_length_cor=sum(average_length_cor_contig)) %>%
+   #tally() %>%
    ungroup() %>% 
    filter(!is.na(CHR_HAP1),
           !is.na(CHR_HAP2)) %>% 
@@ -272,19 +276,25 @@ rm(DATA_CHR_PAIR)
    left_join(.,
              select(filter(CHR_LENGTH_HAP12,HAP == 2), CHR_HAP2 = CHR ,CHR_length_HAP2 = CHR_length)) %>% 
    mutate(length_diff_kb = abs(CHR_length_HAP2-CHR_length_HAP1)/1000) %>% 
-   filter(CHR_length_HAP1 > 10000000, CHR_length_HAP2 > 10000000) %>% 
+   #filter(CHR_length_HAP1 > 25000000, CHR_length_HAP2 > 25000000) %>% #atleast 25Mb to consider as chromosome in Cannabis
+   group_by(CHR_HAP1) %>%
+   slice_max(n,n=2) %>%
+   ungroup() %>%
+   group_by(CHR_HAP2) %>%
+   slice_max(n,n=2) %>%
+   ungroup() %>% 
+   group_by(CHR_HAP1) %>%
+   filter(sum_length_cor == max(sum_length_cor)) %>%
+   ungroup() %>%
+   group_by(CHR_HAP2) %>%
+   slice_max(sum_length_cor == max(sum_length_cor)) %>%
+   ungroup() %>% 
    group_by(CHR_HAP1) %>%
    filter(length_diff_kb == min(length_diff_kb)) %>%
    ungroup() %>%
    group_by(CHR_HAP2) %>%
    filter(length_diff_kb == min(length_diff_kb)) %>%
    ungroup() %>%  
-   group_by(CHR_HAP1) %>%
-   filter(n == max(n)) %>%
-   ungroup() %>%
-   group_by(CHR_HAP2) %>%
-   filter(n == max(n)) %>%
-   ungroup() %>% 
    arrange(desc(CHR_length_HAP1)) %>% 
    select(CHR_HAP1,
           CHR_HAP2) %>% 
@@ -302,12 +312,12 @@ rm(DATA_CHR_PAIR)
 ################################################################Building the assembly file for 3D-DNA######################################################
 
 #re-build the chr orders and length with merged haplotype
-rbind(CHR_CONTIG_HAP1_INFO,
-      CHR_CONTIG_HAP2_INFO)  %>% 
-  full_join(.,
-            CHR_LENGTH_HAP12) %>% 
-  full_join(.,
-            ORDER)  %>% 
+ rbind(CHR_CONTIG_HAP1_INFO,
+       CHR_CONTIG_HAP2_INFO)  %>% 
+   full_join(.,
+             CHR_LENGTH_HAP12) %>% 
+   full_join(.,
+             ORDER)  %>% 
   mutate(new_order_sign=if_else(as.numeric(original_order_sign) > 0,
                                 (new_order*1),
                                 (new_order*-1)
