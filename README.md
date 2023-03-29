@@ -1,4 +1,4 @@
-# haplotype_aware_scaffolding
+# Haplotype Aware Scaffolding
 
 a series of custom scripts for haplotype aware manual curation of genome scaffolds
 
