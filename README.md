@@ -66,7 +66,6 @@ Use the custom R script [ASM2FASTA.R](https://github.com/m-jahani/haplotype_awar
 [minimap2](https://github.com/lh3/minimap2)  was used in [minimap.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/minimap.sh) script to align the two haplotypes for identifying synteny between the assemblies.
 
 ### Step 2.8
-a custum R script [interactive_plot.R](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/interactive_plot.R) was used to put information from last 7 steps together to draw interactive plot for each chromosome of genome assembly.
-
+An interactive plot for each chromosome of the genome assembly was generated using a custom R script [interactive_plot.R](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/interactive_plot.R). This script combines information from the last 7 steps of the pipeline to generate a plot that includes the following information: contig order and orientation, haplotype information, genetic distance and recombination rate of markers, frequency of telomeric repeats, frequency and location of LTRs, and alignment plot of the two haplotypes. The resulting plots can be used for manual curation of the genome assembly in Juicebox
 ### step 2.9
 #                                           Under Development
