@@ -53,4 +53,11 @@ Use the custom R script [ASM2FASTA.R](https://github.com/m-jahani/haplotype_awar
 ### Step 2.3
 [MAPLINKAGE.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/MAPLINKAGE.sh) calculates position of each genetic marker (from the genetic map) on each haplotype of the assembly. 
 
+### Step 2.4
+[recombination.R](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/recombination.R) is a custom R script designed to calculate the cM distance and recombination rate of the genetic map, and assign it to the position of markers in the genome assemblies under curation.
+
+### Step 2.5
+
+[Telomere Identification toolKit (tidk)](https://github.com/tolkit/telomeric-identifier) was used in [TELOMERE.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/TELOMERE.sh) script to scan genome assemblies to find frequency of telomeric repeats 'TTTAGGG' in fized size windows (here `200000`)
+
 #                                           Under Development
