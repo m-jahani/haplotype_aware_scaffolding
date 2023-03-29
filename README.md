@@ -1,6 +1,6 @@
 # Haplotype Aware Scaffolding
 
-a series of custom scripts for haplotype aware manual curation of genome scaffolds
+A series of custom scripts for haplotype aware manual curation of Cannabis genome aseemblies
 
 ## Description
 
