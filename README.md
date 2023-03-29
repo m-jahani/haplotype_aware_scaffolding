@@ -41,6 +41,13 @@ HIC_R1 = HiC read `R1` in fasta format
 HIC_R2 = HiC read `R2` in fasta format
 ```
 
+## Step 2. Drawing assembly curation guide plots
+When the first step of genome scaffolding is done, we have to  draw curation guide plots (interactive information plots on haplotypes, and two haplotype HiC heatmaps) to get the enough information for manual curations. This step of pipline runs its different modules to capture this information and put them in plot format.
 
+### Step 2.1
+Generating a heatmap of both haplotypes in a single plot for Juicebox can be achieved using a custom R script (mix_reviewed_assemblies.R) [https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/mix_reviewed_assemblies.R]. This script takes the outputs of the first step from '3D-DNA' and 'minimap2' and combines the contig information data of the two haplotypes to generate a heatmap for 'Juicebox' with both haplotypes simultaneously in a plot.
+
+### Step 2.1
+Use the custom R script ASM2FASTA.R to convert the output of Step 2.1 to fasta format efficiently. The output of 3DDNA with the "*assembly" suffix is essentially a text file containing information on the order and orientation of contigs. Since this file can be edited in Juicebox, we can always obtain the fasta file after any curation.
 
 #                                           Under Development
