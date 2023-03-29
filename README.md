@@ -63,5 +63,10 @@ Use the custom R script [ASM2FASTA.R](https://github.com/m-jahani/haplotype_awar
 [EDTA](https://github.com/oushujun/EDTA) was utilized in [EDTA.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/EDTA.sh) to annotate Long Terminal Repeats (LTRs) and estimate their frequency in genome assemblies. LTRs are more frequent in centromere regions, thus providing insight into the location of the centromere
 
 ### Step 2.7
-[minimap2](https://github.com/lh3/minimap2)
+[minimap2](https://github.com/lh3/minimap2)  was used in [minimap.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/minimap.sh) script to align the two haplotypes for identifying synteny between the assemblies.
+
+### Step 2.8
+a custum R script [interactive_plot.R](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/interactive_plot.R) was used to put information from last 7 steps together to draw interactive plot for each chromosome of genome assembly.
+
+### step 2.9
 #                                           Under Development
