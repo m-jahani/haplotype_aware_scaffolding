@@ -58,6 +58,6 @@ Use the custom R script [ASM2FASTA.R](https://github.com/m-jahani/haplotype_awar
 
 ### Step 2.5
 
-[Telomere Identification toolKit (tidk)](https://github.com/tolkit/telomeric-identifier) was used in [TELOMERE.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/TELOMERE.sh) script to scan genome assemblies to find frequency of telomeric repeats 'TTTAGGG' in fized size windows (here `200000`)
+[Telomere Identification toolKit (tidk)](https://github.com/tolkit/telomeric-identifier) was used in [TELOMERE.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/TELOMERE.sh) script to scan genome assemblies to find frequency of telomeric repeats `TTTAGGG` in fixed size windows (here `200000`)
 
 #                                           Under Development
