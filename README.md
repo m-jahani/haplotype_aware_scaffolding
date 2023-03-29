@@ -11,7 +11,7 @@ This pipeline was designed for haplotype-aware scaffolding of Cannabis genome as
 
 This step focuses on mapping Hi-C reads to Haplotype 1 and Haplotype 2 of the Cannabis genome assembly separately, and then runs contig scaffolding. Additionally, it combines both haplotypes in a single FASTA file and repeats the mapping and scaffolding step. To identify corresponding scaffolds in the haplotypes of a genome assembly, the pipeline aligns the haplotypes against each other using minimap2.
 
-It is important to note that, in 3D-DNA scaffolding, the parameter -r 0 was used. r defines the number of misjoin correction rounds, and by setting it to 0, we skipped misjoin correction since 3D-DNA tends to over-correct plant genome assemblies.
+It is important to note that, in 3D-DNA scaffolding, the parameter `-r 0` was used. `r` defines the number of misjoin correction rounds, and by setting it to `0`, we skipped misjoin correction since 3D-DNA tends to over-correct plant genome assemblies.
 
 Step 1 can be executed with [run_step1_scaffolding.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/run_step1_scaffolding.sh) as follow:
 ```
@@ -39,4 +39,8 @@ JUCIER_DIR = Path to where Juicer was installed
 RESULT_DIR = path for saving results
 HIC_R1 = HiC read `R1` in fasta format
 HIC_R2 = HiC read `R2` in fasta format
+```
+
+
+
 #                                           Under Development
