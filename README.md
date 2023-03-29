@@ -33,8 +33,7 @@ ID_HAP1 = ID for haplotype one, example: MK_ultra_hap1
 ID_HAP2 = ID for haplotype two, example: MK_ultra_hap2
 SAMPLE = ID for the genotype, example: MK_ultra
 ASSEMBLY_hap1 = genome assembly of haplotype 1 in fasta format, example: MK_ultra.hic.hap1.p_ctg.fasta
-ASSEMBLY_hap2 = genome assembly of haplotype 2 
-in fasta format, example: MK_ultra.hic.hap2.p_ctg.fasta
+ASSEMBLY_hap2 = genome assembly of haplotype 2 in fasta format, example: MK_ultra.hic.hap2.p_ctg.fasta
 JUCIER_DIR = Path to where Juicer was installed
 RESULT_DIR = path for saving results
 HIC_R1 = HiC read `R1` in fasta format
@@ -54,7 +53,7 @@ Use the custom R script [ASM2FASTA.R](https://github.com/m-jahani/haplotype_awar
 [MAPLINKAGE.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/MAPLINKAGE.sh) calculates position of each genetic marker (from the genetic map) on each haplotype of the assembly. 
 
 ### Step 2.4
-[recombination.R](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/recombination.R) is a custom R script designed to calculate the cM distance and recombination rate of the genetic map, and assign it to the position of markers in the genome assemblies under curation.
+[recombination.R](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/recombination.R) is a custom R script designed to calculate recombination rate of the genetic map, and assign it to the position of markers in the genome assemblies under curation.
 
 ### Step 2.5
 [Telomere Identification toolKit (tidk)](https://github.com/tolkit/telomeric-identifier) was used in [TELOMERE.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/TELOMERE.sh) script to scan genome assemblies and calculate the frequency of telomeric repeats `TTTAGGG` in fixed size windows (here `200000`)
@@ -68,4 +67,33 @@ Use the custom R script [ASM2FASTA.R](https://github.com/m-jahani/haplotype_awar
 ### Step 2.8
 An interactive plot for each chromosome of the genome assembly was generated using a custom R script [interactive_plot.R](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/interactive_plot.R). This script combines information from the last 7 steps of the pipeline to generate a plot that includes the following information: contig order and orientation, haplotype information, genetic distance and recombination rate of markers, frequency of telomeric repeats, frequency and location of LTRs, and alignment plot of the two haplotypes. The resulting plots can be used for manual curation of the genome assembly in Juicebox
 ### step 2.9
-#                                           Under Development
+[breakingPoint.R](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/breakingPoint.R) generate a summary table of alignment between the two haplotypes
+
+
+Step 2 can be executed with [run_step2_plots.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/run_step2_plots.sh) as follow:
+```
+bash run_step2_plots.sh \
+ID_HAP1 \ 
+ID_HAP2 \ 
+SAMPLE \
+ASSEMBLY_hap1 \
+ASSEMBLY_hap2 \
+RESULT_DIR \
+PRIME_3 \
+PRIME_5 \
+LINKAGE_DATA
+```
+
+Where each variable can be defined as follow:
+```
+ID_HAP1 = ID for haplotype one, example: MK_ultra_hap1
+ID_HAP2 = ID for haplotype two, example: MK_ultra_hap2
+SAMPLE = ID for the genotype, example: MK_ultra
+ASSEMBLY_hap1 = genome assembly of haplotype 1 in fasta format, example: MK_ultra.hic.hap1.p_ctg.fasta
+ASSEMBLY_hap2 = genome assembly of haplotype 2 in fasta format, example: MK_ultra.hic.hap2.p_ctg.fasta
+RESULT_DIR = path for saving results
+PRIME_3 = 1st primer for markers in genetic map
+PRIME_5 = 2nd primer for markers in genetic map
+LINKAGE_DATA = information on genetic position of each market in linkage map
+```
+# Under Development
