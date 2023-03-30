@@ -108,7 +108,7 @@ To import Hi-C contact information, open Juicebox and navigate to `File` > `Open
 Once imported, the Hi-C contact information should display a contact map similar to the following
 ![SweetSkunk](SweetSkunk.png)
 
-To get contig information and corrct orientation and order of contigs navigate to `Assembly` > `Import Map Assembly`, with the suffix `0.assembly` containing the IDs of both haplotypes to [Juicebox](https://github.com/aidenlab/Juicebox). For example: Sweet_skunk_s47.hic.hap1.p_ctg_Sweet_skunk_s47.hic.hap2.p_ctg.0.assembly
+To get contig information and corrct orientation and order of contigs navigate to `Assembly` > `Import Map Assembly`, select file with the suffix `0.assembly` containing the IDs of both haplotypes to [Juicebox](https://github.com/aidenlab/Juicebox). For example: Sweet_skunk_s47.hic.hap1.p_ctg_Sweet_skunk_s47.hic.hap2.p_ctg.0.assembly
 
 Once the contig information is imported, the green boxes on the contact map will represent contig positions, similar to the following:
 ![SweetSkunkContig](SweetSkunkContig.png)
@@ -120,9 +120,12 @@ Save the newly defined chromosome boundaries by navigating to Assembly > Export 
 ## Manual genome assembly Curation
 When defining chromosome boundaries, the next step is manual curation based on the interactive plots and Hi-C contact information. For those new to working with [Juicebox](https://github.com/aidenlab/Juicebox), this [video](https://www.youtube.com/watch?v=Nj7RhQZHM18&t=112s) could be helpful.
 
-When all curation is complete and you want to save the result, navigate to Assembly > Export Assembly. To differentiate it from the original file, it is recommended to save it with the suffix '1.review.assembly', where the number 1 indicates the first round of curation.
+When all curation is complete and you want to save the result, navigate to `Assembly` > `Export Assembly`. To differentiate it from the original file, it is recommended to save it with the suffix `1.review.assembly`, where the number `1` indicates the first round of curation.
 
-
+If you need to take a break or accidentally close Juicebox, you can easily pick up where you left off by following these steps:
+- import Hi-C contact information, open Juicebox and navigate to `File` > `Open` > `Local`, then select the mixed Hi-C file from the previous steps with the suffix `.0.hic` containing the IDs of both haplotype. For example: Sweet_skunk_s47.hic.hap1.p_ctg_Sweet_skunk_s47.hic.hap2.p_ctg.0.hic.
+- import assembly file with navigating to `Assembly` > `Import Map Assembly`, select file with the suffix `0.assembly` containing the IDs of both haplotypes to [Juicebox](https://github.com/aidenlab/Juicebox). For example: Sweet_skunk_s47.hic.hap1.p_ctg_Sweet_skunk_s47.hic.hap2.p_ctg.0.assembly
+- import your curation with navigating to `Assembly` > `Import Modified Assembly`, select file with the suffix `1.review.assembly`. For example: Sweet_skunk_s47.hic.hap1.p_ctg_Sweet_skunk_s47.hic.hap2.p_ctg.1.review.assembly
 
 
 
