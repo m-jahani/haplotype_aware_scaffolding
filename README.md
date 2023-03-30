@@ -126,7 +126,11 @@ If you need to take a break or accidentally close Juicebox, you can easily pick 
 - import Hi-C contact information, open Juicebox and navigate to `File` > `Open` > `Local`, then select the mixed Hi-C file from the previous steps with the suffix `.0.hic` containing the IDs of both haplotype. For example: Sweet_skunk_s47.hic.hap1.p_ctg_Sweet_skunk_s47.hic.hap2.p_ctg.0.hic.
 - import assembly file with navigating to `Assembly` > `Import Map Assembly`, select file with the suffix `0.assembly` containing the IDs of both haplotypes to [Juicebox](https://github.com/aidenlab/Juicebox). For example: Sweet_skunk_s47.hic.hap1.p_ctg_Sweet_skunk_s47.hic.hap2.p_ctg.0.assembly
 - import your curation with navigating to `Assembly` > `Import Modified Assembly`, select file with the suffix `1.review.assembly`. For example: Sweet_skunk_s47.hic.hap1.p_ctg_Sweet_skunk_s47.hic.hap2.p_ctg.1.review.assembly
+- When new modification are done, navigate to `Assembly` > `Export Assembly`. and overwrite the modifications to the same file with suffix `1.review.assembly`, because it is still the same round of curation.
 
+To see the changes made in the manual curation reflected in the interactive guide plot, rerun Step 3, which involves redrawing the interactive guide plots.
+
+## Step 3. Re-drawing assembly curation guide plots
 
 
 # Under Development
