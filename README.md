@@ -70,7 +70,7 @@ An interactive plot for each chromosome of the genome assembly was generated usi
 [breakingPoint.R](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/breakingPoint.R) generate a summary table of alignment between the two haplotypes
 
 
-Step 2 can be executed with [run_step2_plots.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/run_step2_plots.sh) as follow:
+Step 2 can be executed with run [step2_plots.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/run_step2_plots.sh) as follow:
 ```
 bash run_step2_plots.sh \
 ID_HAP1 \ 
@@ -132,5 +132,36 @@ To see the changes made in the manual curation reflected in the interactive guid
 
 ## Step 3. Re-drawing assembly curation guide plots
 
+The third step involves obtaining information on manual curation from [Juicebox](https://github.com/aidenlab/Juicebox) in the format of a file with the assembly suffix. This information is then used to redraw the interactive guide plot to reflect the new changes.
+
+Step 3 can be executed with run [step3_fix_scaffolding.sh](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/run_step3_fix_scaffolding.sh) as follow:
+```
+bash run_step3_fix_scaffolding.tmp.sh \
+ID_HAP1 \ 
+ID_HAP2 \
+SAMPLE \
+ASSEMBLY_hap1 \
+ASSEMBLY_hap2 \
+RESULT_DIR \
+curation_round \
+CURATED_ASSEMBLY 
+```
+
+Where each variable can be defined as follow:
+```
+ID_HAP1 = ID for haplotype one, example: MK_ultra_hap1
+ID_HAP2 = ID for haplotype two, example: MK_ultra_hap2
+SAMPLE = ID for the genotype, example: MK_ultra
+ASSEMBLY_hap1 = genome assembly of haplotype 1 in fasta format, example: MK_ultra.hic.hap1.p_ctg.fasta
+ASSEMBLY_hap2 = genome assembly of haplotype 2 in fasta format, example: MK_ultra.hic.hap2.p_ctg.fasta
+RESULT_DIR = path for saving results
+curation_round = a number that represents round of curationecample:  1 for the first round
+CURATED_ASSEMBLY = output of Juicebox with "review.assembly" suffix, example: MK_ultra.hic.hap1.p_ctg_MK_ultra.hic.hap2.p_ctg.1.review.assembly
+```
+When you obtain the interactive curation guide plots, you can follow the `Manual Genome Assembly Curation` step and save the result with 2.review.assembly suffix to denote the second round of curation.
+
+The Manual Genome Assembly Curation step, followed by Step 3. Re-drawing assembly curation guide plots, can be used multiple times to obtain the desired result in manual curation. Each time the result should be saved with a round number, such as 2.review.assembly for the second round of curation.
+
+## Step 4. Finalizing the genome assemblies
 
 # Under Development
