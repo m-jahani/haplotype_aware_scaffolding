@@ -111,5 +111,5 @@ Once imported, the Hi-C contact information should display a contact map similar
 To get contig information and corrct orientation and order of contigs navigate to `Assembly` > `Import Map Assembly`, with the suffix `0.assembly` containing the IDs of both haplotypes to [Juicebox](https://github.com/aidenlab/Juicebox). For example: Sweet_skunk_s47.hic.hap1.p_ctg_Sweet_skunk_s47.hic.hap2.p_ctg.0.assembly
 
 Once the contig information is imported, the green boxes on the contact map will represent contig positions, similar to the following:
-![SweetSkunkContig](SweetSkunkContig.pmg)
+![SweetSkunkContig](SweetSkunkContig.png)
 # Under Development
