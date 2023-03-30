@@ -96,7 +96,9 @@ PRIME_3 = 1st primer for markers in genetic map
 PRIME_5 = 2nd primer for markers in genetic map
 LINKAGE_DATA = information on genetic position of each market in linkage map
 ```
-Here is an example of interactive plots:
+Here is an example of interactive plots (not interactive here):
 ![AK](AK.png)
+
+## Step 3. Manual Curation
 
 # Under Development
