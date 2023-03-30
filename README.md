@@ -106,7 +106,7 @@ To define chromosome boundaries in the Hi-C heatmap, we need to first import our
 To import Hi-C contact information, open Juicebox and navigate to `File` > `Open` > `Local`, then select your mixed Hi-C file from the previous steps. For example: Sweet_skunk_s47.hic.hap1.p_ctg_Sweet_skunk_s47.hic.hap2.p_ctg.0.hic.
 
 Once you've imported the Hi-C contact information, you should see a contact map similar to the following:
-~[SweetSkunk](SweetSkunk.png)
+![SweetSkunk](SweetSkunk.png)
 
 
 # Under Development
