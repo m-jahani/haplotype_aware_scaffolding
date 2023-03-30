@@ -160,7 +160,7 @@ CURATED_ASSEMBLY = output of Juicebox with "review.assembly" suffix, example: MK
 ```
 When you obtain the interactive curation guide plots, you can follow the `Manual Genome Assembly Curation` step and save the result with 2.review.assembly suffix to denote the second round of curation.
 
-The Manual Genome Assembly Curation step, followed by Step 3. Re-drawing assembly curation guide plots, can be used multiple times to obtain the desired result in manual curation. Each time the result should be saved with a round number, such as 2.review.assembly for the second round of curation.
+The Manual Genome Assembly Curation step, followed by Step 3. Re-drawing assembly curation guide plots, can be used multiple times to obtain the desired result in manual curation. Each time the result should be saved with a round number, such as `2.review.assembly` for the second round of curation.
 
 ## Step 4. Finalizing the genome assemblies
 
