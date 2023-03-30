@@ -1,4 +1,4 @@
-<h1 style="text-align:center;">Haplotype Aware Scaffolding</h1>
+                                   <h1 style="text-align:center;">Haplotype Aware Scaffolding</h1>
 
 A series of custom scripts for haplotype aware manual curation of Cannabis genome assemblies
 
