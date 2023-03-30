@@ -118,7 +118,7 @@ The blue box represents the position of the chromosomes in the contact map. As s
 Save the newly defined chromosome boundaries by navigating to Assembly > Export Assembly. To differentiate it from the original file, it is recommended to save it with the suffix '.review.assembly'.
 
 ## Manual genome assembly Curation
-When defining chromosome boundaries, the next step is manual curation based on the interactive plots and Hi-C contact information. For those new to working with [Juicebox](https://github.com/aidenlab/Juicebox), this [video](https://www.youtube.com/watch?v=Nj7RhQZHM18&t=112s) could be helpful for working with juicebox could be helpful.
+When defining chromosome boundaries, the next step is manual curation based on the interactive plots and Hi-C contact information. For those new to working with [Juicebox](https://github.com/aidenlab/Juicebox), this [video](https://www.youtube.com/watch?v=Nj7RhQZHM18&t=112s) could be helpful.
 
 When all curation is complete and you want to save the result, navigate to Assembly > Export Assembly. To differentiate it from the original file, it is recommended to save it with the suffix '1.review.assembly', where the number 1 indicates the first round of curation.
 
