@@ -112,4 +112,18 @@ To get contig information and corrct orientation and order of contigs navigate t
 
 Once the contig information is imported, the green boxes on the contact map will represent contig positions, similar to the following:
 ![SweetSkunkContig](SweetSkunkContig.png)
+
+The blue box represents the position of the chromosomes in the contact map. As shown in the illustration above, there is only one blue box, indicating that the chromosome boundaries have not been defined. To define chromosome boundaries in Juicebox, it is necessary to pay attention to the contact pattern of Hi-C. Each red block corresponds to a chromosome (20 in the example here, as Cannabis has 10 chromosomes and 2 haplotypes are mixed). By zooming in, one can identify the beginning and end of each chromosome and split the blue box by left-clicking right after the last contig of the preceding chromosome and before the first contig of the next chromosome. 
+
+Save the newly defined chromosome boundaries by navigating to Assembly > Export Assembly. To differentiate it from the original file, it is recommended to save it with the suffix '.review.assembly'.
+
+## Manual genome assembly Curation
+When defining chromosome boundaries, the next step is manual curation based on the interactive plots and Hi-C contact information. For those new to working with [Juicebox](https://github.com/aidenlab/Juicebox), this [video](https://www.youtube.com/watch?v=Nj7RhQZHM18&t=112s) could be helpful for working with juicebox could be helpful.
+
+When all curation is complete and you want to save the result, navigate to Assembly > Export Assembly. To differentiate it from the original file, it is recommended to save it with the suffix '1.review.assembly', where the number 1 indicates the first round of curation.
+
+
+
+
+
 # Under Development
