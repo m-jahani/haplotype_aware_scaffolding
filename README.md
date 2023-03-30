@@ -98,6 +98,7 @@ LINKAGE_DATA = information on genetic position of each market in linkage map
 ```
 Here is an example of interactive plots (not interactive here):
 ![AK](AK.png)
+Each vertical colored bar show a contig
 
 ## Step 3. Manual Curation
 
