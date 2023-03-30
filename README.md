@@ -101,12 +101,15 @@ Here is an example of interactive plots (not interactive here):
 Each vertical colored bar show a contig
 
 ## Define chromosome boundaries 
-To define chromosome boundaries in the Hi-C heatmap, we need to first import our Hi-C contact information and the contig order and orientation to [Juicebox](https://github.com/aidenlab/Juicebox).
+To define chromosome boundaries in the Hi-C heatmap, We need to first import our Hi-C contact information and the contig order and orientation to [Juicebox](https://github.com/aidenlab/Juicebox).
 
-To import Hi-C contact information, open Juicebox and navigate to `File` > `Open` > `Local`, then select your mixed Hi-C file from the previous steps. For example: Sweet_skunk_s47.hic.hap1.p_ctg_Sweet_skunk_s47.hic.hap2.p_ctg.0.hic.
+To import Hi-C contact information, open Juicebox and navigate to `File` > `Open` > `Local`, then select the mixed Hi-C file from the previous steps with the suffix `.0.hic` containing the IDs of both haplotype. For example: Sweet_skunk_s47.hic.hap1.p_ctg_Sweet_skunk_s47.hic.hap2.p_ctg.0.hic.
 
-Once you've imported the Hi-C contact information, you should see a contact map similar to the following:
+Once imported, the Hi-C contact information should display a contact map similar to the following
 ![SweetSkunk](SweetSkunk.png)
 
+To get contig information and corrct orientation and order of contigs navigate to `Assembly` > `Import Map Assembly`, with the suffix `0.assembly` containing the IDs of both haplotypes to [Juicebox](https://github.com/aidenlab/Juicebox). For example: Sweet_skunk_s47.hic.hap1.p_ctg_Sweet_skunk_s47.hic.hap2.p_ctg.0.assembly
 
+Once the contig information is imported, the green boxes on the contact map will represent contig positions, similar to the following:
+![SweetSkunkContig](SweetSkunkContig.pmg)
 # Under Development
