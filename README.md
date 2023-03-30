@@ -1,4 +1,4 @@
-#                                                             Haplotype Aware Scaffolding
+# Haplotype Aware Scaffolding
 
 A series of custom scripts for haplotype aware manual curation of Cannabis genome assemblies
 
