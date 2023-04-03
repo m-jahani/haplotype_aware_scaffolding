@@ -158,7 +158,7 @@ RESULT_DIR = path for saving results
 curation_round = a number that represents round of curationecample:  1 for the first round
 CURATED_ASSEMBLY = output of Juicebox with "review.assembly" suffix, example: MK_ultra.hic.hap1.p_ctg_MK_ultra.hic.hap2.p_ctg.1.review.assembly
 ```
-When you obtain the interactive curation guide plots, you can follow the `Manual Genome Assembly Curation` step and save the result with 2.review.assembly suffix to denote the second round of curation.
+When you obtain the interactive curation guide plots, you can follow the `Manual Genome Assembly Curation` step and save the result with `2.review.assembly` suffix to denote the second round of curation.
 
 The Manual Genome Assembly Curation step, followed by Step 3. Re-drawing assembly curation guide plots, can be used multiple times to obtain the desired result in manual curation. Each time the result should be saved with a round number, such as `2.review.assembly` for the second round of curation.
 
