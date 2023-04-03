@@ -163,5 +163,6 @@ When you obtain the interactive curation guide plots, you can follow the `Manual
 The Manual Genome Assembly Curation step, followed by Step 3. Re-drawing assembly curation guide plots, can be used multiple times to obtain the desired result in manual curation. Each time the result should be saved with a round number, such as `2.review.assembly` for the second round of curation.
 
 ## Step 4. Finalizing the genome assemblies
+This step involves the finalization of the Fasta files for both haplotypes. Custom R scripts are used to add gaps of N with a length of 100 bases between contigs ([ASM2FASTA_GAP.R](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/ASM2FASTA_GAP.R)) and to assign chromosome numbers to each scaffold ([CHRID.R](https://github.com/m-jahani/haplotype_aware_scaffolding/blob/main/CHRID.R)) based on a pre-defined genome assembly (here, CS10)
 
 # Under Development
